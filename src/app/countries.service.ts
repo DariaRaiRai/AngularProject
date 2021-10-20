@@ -11,13 +11,13 @@ export class CountriesService {
 
   getCountries() {
     return this.http
-        .get<Country[]>('https://corona.lmao.ninja/v2/countries')
-        .pipe(
-          map((countries: Country[]) => {
-            const countriesList = countries.map((c) => c.country);
-            localStorage.setItem('countries', JSON.stringify(countriesList));
-            return countriesList;
-          })
-        );
+      .get<Country[]>('https://corona.lmao.ninja/v2/countries')
+      .pipe(
+        map((countries: Country[]) => {
+          const countriesList = countries.map((c) => c.country);
+          localStorage.setItem('countries', JSON.stringify(countriesList));
+          return countriesList;
+        })
+      );
   }
 }
