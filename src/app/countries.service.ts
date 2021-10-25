@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Country } from './country';
+import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Country } from './country';
 
 @Injectable({
   providedIn: 'root',

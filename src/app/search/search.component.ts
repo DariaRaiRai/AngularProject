@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { from, iif, Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { filter, reduce, switchMap, take } from 'rxjs/operators';
 import { CountriesService } from '../countries.service';
 
