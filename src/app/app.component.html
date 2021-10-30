@@ -1,5 +1,8 @@
-<router-outlet></router-outlet> {{ title }}
+<router-outlet></router-outlet>
 <br />
-{{ country | async }}
-<button (click)="setUkraine()">UA</button>
-<button (click)="setRussia()">RU</button>
+<div class="buttons">
+  <button (click)="setUkraine()">UA</button>
+  <button (click)="setRussia()">RU</button>
+</div>
+<br />
+<h1>{{ country | async }}</h1>

@@ -13,7 +13,6 @@ interface AppState {
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'my-app';
   country: Observable<string>;
 
   constructor(private store: Store<AppState>) {
