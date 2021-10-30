@@ -7,7 +7,10 @@
     [formControl]="countriesControl"
     [matAutocomplete]="auto"
   />
-  <mat-autocomplete #auto="matAutocomplete">
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="optionSelected($event)"
+  >
     <mat-option *ngFor="let country of filteredCountries" [value]="country">
       {{ country }}
     </mat-option>

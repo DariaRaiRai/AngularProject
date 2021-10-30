@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { from, Observable, of } from 'rxjs';
 import { filter, reduce, switchMap, take } from 'rxjs/operators';
 import { CountriesService } from '../countries.service';
@@ -49,5 +50,9 @@ export class SearchComponent implements OnInit {
 
       return found;
     };
+  }
+
+  optionSelected(event: MatAutocompleteSelectedEvent) {
+    console.log('-->', event.option.value);
   }
 }
