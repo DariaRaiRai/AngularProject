@@ -1,1 +1,5 @@
 <router-outlet></router-outlet> {{ title }}
+<br />
+{{ country | async }}
+<button (click)="setUkraine()">UA</button>
+<button (click)="setRussia()">RU</button>
