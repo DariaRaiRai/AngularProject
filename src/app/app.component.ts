@@ -18,12 +18,4 @@ export class AppComponent {
   constructor(private store: Store<AppState>) {
     this.country = this.store.select('country');
   }
-
-  setUkraine() {
-    this.store.dispatch(setCountry({ country: 'Ukraine' }));
-  }
-
-  setRussia() {
-    this.store.dispatch(setCountry({ country: 'Russia' }));
-  }
 }
