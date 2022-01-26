@@ -11,6 +11,7 @@ import { CountriesService } from '../countries.service';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
+  searchValue: string = '';
   countriesControl = new FormControl();
   countries: Observable<string[]>;
   filteredCountries: string[] = [];
@@ -22,7 +23,7 @@ export class SearchComponent implements OnInit {
     this.countries = this.CountriesService.getCountries();
 
     this.countriesControl.valueChanges
-      .pipe(switchMap((value) => (value.length > 2 ? of(value) : of(''))))
+      .pipe(switchMap((value) => (value.length >= 2 ? of(value) : of(''))))
       .subscribe((value) => {
         this.countries
           .pipe(
@@ -53,6 +54,26 @@ export class SearchComponent implements OnInit {
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent) {
-    console.log('-->', event.option.value);
+    this.CountriesService.selectedCountry = event.option.value;
+  }
+
+  onBlur() {
+    console.log('-->', 'b');
+    console.log('-->', this.countries);
+    console.log('-->', this.countriesControl.value);
+    // this.countries.subscribe((countries) => {
+    //   if (!countries.includes(this.countriesControl.value)) {
+    //     this.countriesControl.setValue('', { emitEvent: true });
+    //   }
+    // });
+  }
+
+  onFocus() {
+    console.log('-->', 'f');
+    // this.countries.subscribe((countries) => {
+    //   if (!countries.includes(this.countriesControl.value)) {
+    //     this.countriesControl.setValue('', { emitEvent: true });
+    //   }
+    // });
   }
 }
