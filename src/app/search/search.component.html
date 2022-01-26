@@ -2,6 +2,7 @@
   <mat-label>Search country</mat-label>
   <input
     type="text"
+    (focus)="onFocus($event)"
     placeholder="Search Country"
     matInput
     [formControl]="countriesControl"

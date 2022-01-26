@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { filter, map, reduce, switchMap, take } from 'rxjs/operators';
 import { Country } from './country';
 
 @Injectable({
@@ -10,24 +10,46 @@ import { Country } from './country';
 export class CountriesService {
   constructor(private http: HttpClient) {}
 
-  public country: string | null = null;
-
-  getCountries() {
-    const savedCountries = JSON.parse(localStorage.getItem('countries') || '');
+  getCountries(): Observable<string[]> {
+    const savedCountries = localStorage.getItem('countries');
     if (savedCountries) {
-      return of(savedCountries);
+      return of(JSON.parse(savedCountries));
     } else {
       return this.http
-        .get<Country[]>('https://corona.lmao.ninja/v2/countries')
-        .pipe(map((countries: Country[]) => countries.map((c) => c.country)));
+        .get<Country[]>('https://disease.sh/v3/covid-19/countries')
+        .pipe(
+          map((countries: Country[]) => {
+            const res = countries.map((c) => c.country);
+            localStorage.setItem('countries', JSON.stringify(res));
+            return res;
+          })
+        );
     }
   }
 
-  get selectedCountry() {
-    return this.country;
+  search(term: string) {
+    return this.getCountries().pipe(
+      switchMap((countries) => from(countries)),
+      filter(this.filterCountriesByText(term)),
+      take(5),
+      reduce((acc, country) => [...acc, country], [] as string[])
+    );
   }
 
-  set selectedCountry(country: string | null) {
-    this.country = country;
+  private filterCountriesByText(text: string) {
+    return (country: string) => {
+      let found = false;
+      if (text.length) {
+        const lettersIndexes = text
+          .toLowerCase()
+          .split('')
+          .map((letter) => country.toLowerCase().indexOf(letter));
+        found =
+          lettersIndexes.every((index) => index !== -1) &&
+          lettersIndexes.join('') === lettersIndexes.sort().join('');
+      }
+
+      return found;
+    };
   }
 }
