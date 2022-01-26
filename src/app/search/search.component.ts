@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { debounce, filter } from 'rxjs/operators';
 import { CountriesService } from '../countries.service';
 import { setCountry } from '../country.actions';
 
@@ -33,8 +33,8 @@ export class SearchComponent implements OnInit {
 
     this.countriesControl.valueChanges
       .pipe(
-        switchMap((value) => (value.length >= 2 ? of(value) : of(''))),
-        filter((v) => v)
+        debounce(() => timer(400)),
+        filter((v) => v.length >= 2)
       )
       .subscribe(this.search.bind(this));
   }
