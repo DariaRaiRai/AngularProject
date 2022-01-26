@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { filter, map, reduce, switchMap, take } from 'rxjs/operators';
 import { Country } from './country';
+import { fuzzyMatch } from './utils';
 
 @Injectable({
   providedIn: 'root',
@@ -37,19 +38,7 @@ export class CountriesService {
   }
 
   private filterCountriesByText(text: string) {
-    return (country: string) => {
-      let found = false;
-      if (text.length) {
-        const lettersIndexes = text
-          .toLowerCase()
-          .split('')
-          .map((letter) => country.toLowerCase().indexOf(letter));
-        found =
-          lettersIndexes.every((index) => index !== -1) &&
-          lettersIndexes.join('') === lettersIndexes.sort().join('');
-      }
-
-      return found;
-    };
+    return (country: string) =>
+      fuzzyMatch(text.toLowerCase(), country.toLowerCase());
   }
 }
