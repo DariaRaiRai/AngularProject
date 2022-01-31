@@ -9,10 +9,19 @@ import { filterByFuzzyTextMatch } from './utils';
   providedIn: 'root',
 })
 export class CountriesService {
+  maximumReturnedItems: number = 5;
+
   constructor(private http: HttpClient) {}
 
   getCountries(): Observable<string[]> {
-    const savedCountries = localStorage.getItem('countries');
+    let savedCountries;
+
+    try {
+      savedCountries = sessionStorage.getItem('countries');
+    } catch (e) {
+      console.error(e);
+    }
+
     if (savedCountries) {
       return of(JSON.parse(savedCountries));
     } else {
@@ -21,7 +30,7 @@ export class CountriesService {
         .pipe(
           map((countries: Country[]) => {
             const res = countries.map((c) => c.country);
-            localStorage.setItem('countries', JSON.stringify(res));
+            sessionStorage.setItem('countries', JSON.stringify(res));
             return res;
           })
         );
@@ -32,8 +41,8 @@ export class CountriesService {
     return this.getCountries().pipe(
       switchMap((countries) => from(countries)),
       filter(filterByFuzzyTextMatch(term)),
-      take(5),
-      reduce((acc, country) => [...acc, country], [] as string[])
+      take(this.maximumReturnedItems),
+      reduce((acc, country) => acc.concat(country), [] as string[])
     );
   }
 }
