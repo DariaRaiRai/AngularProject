@@ -14,16 +14,18 @@ export class CountriesService {
   constructor(private http: HttpClient) {}
 
   getCountries(): Observable<string[]> {
-    let savedCountries;
+    let savedCountries: string[] | null = null;
 
     try {
-      savedCountries = sessionStorage.getItem('countries');
+      savedCountries = JSON.parse(
+        sessionStorage.getItem('countries') || 'null'
+      );
     } catch (e) {
       console.error(e);
     }
 
     if (savedCountries) {
-      return of(JSON.parse(savedCountries));
+      return of(savedCountries);
     } else {
       return this.http
         .get<Country[]>('https://disease.sh/v3/covid-19/countries')
