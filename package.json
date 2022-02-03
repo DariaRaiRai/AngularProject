@@ -51,7 +51,6 @@
   "typeCoverage": {
     "atLeast": 99,
     "cache": true,
-    "debug": true,
-    "detail": true
+    "debug": true
   }
 }
