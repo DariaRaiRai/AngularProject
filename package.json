@@ -49,7 +49,7 @@
     "typescript": "~4.3.5"
   },
   "typeCoverage": {
-    "atLeast": 97,
+    "atLeast": 99,
     "cache": true,
     "debug": true,
     "detail": true

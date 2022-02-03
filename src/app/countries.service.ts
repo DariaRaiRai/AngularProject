@@ -9,7 +9,7 @@ import { filterByFuzzyTextMatch } from './utils';
   providedIn: 'root',
 })
 export class CountriesService {
-  maximumReturnedItems: number = 5;
+  maximumReturnedItems = 5;
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class CountriesService {
       savedCountries = JSON.parse(
         sessionStorage.getItem('countries') || 'null'
       );
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(e);
     }
 

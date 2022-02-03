@@ -27,21 +27,21 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('country').subscribe((country) => {
+    this.store.select('country').subscribe((country: string) => {
       this.country = country;
     });
 
     this.countriesControl.valueChanges
       .pipe(
         debounce(() => timer(400)),
-        filter((v) => v.length >= 2)
+        filter((v: string) => v.length >= 2)
       )
       .subscribe(this.search.bind(this));
   }
 
   search(term: string) {
     this.CountriesService.search(term).subscribe(
-      (countries) => (this.filteredCountries = countries)
+      (countries: string[]) => (this.filteredCountries = countries)
     );
   }
 
