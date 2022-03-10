@@ -1,0 +1,19 @@
+<mat-form-field appearance="fill">
+  <mat-label>Search country</mat-label>
+  <input
+    type="text"
+    (focus)="onFocus($event)"
+    placeholder="Search Country"
+    matInput
+    [formControl]="countriesControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="optionSelected($event)"
+  >
+    <mat-option *ngFor="let country of filteredCountries" [value]="country">
+      {{ country }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

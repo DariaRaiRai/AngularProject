@@ -1,23 +1,50 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { from, Observable, of } from 'rxjs';
+import { filter, map, reduce, switchMap, take } from 'rxjs/operators';
 import { Country } from './country';
-import { map } from 'rxjs/operators';
+import { filterByFuzzyTextMatch } from './utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CountriesService {
+  maximumReturnedItems = 5;
+
   constructor(private http: HttpClient) {}
 
-  getCountries() {
-    return this.http
-      .get<Country[]>('https://corona.lmao.ninja/v2/countries')
-      .pipe(
-        map((countries: Country[]) => {
-          const countriesList = countries.map((c) => c.country);
-          localStorage.setItem('countries', JSON.stringify(countriesList));
-          return countriesList;
-        })
+  getCountries(): Observable<string[]> {
+    let savedCountries: string[] | null = null;
+
+    try {
+      savedCountries = JSON.parse(
+        sessionStorage.getItem('countries') || 'null'
       );
+    } catch (e: unknown) {
+      console.error(e);
+    }
+
+    if (savedCountries) {
+      return of(savedCountries);
+    } else {
+      return this.http
+        .get<Country[]>('https://disease.sh/v3/covid-19/countries')
+        .pipe(
+          map((countries: Country[]) => {
+            const res = countries.map((c) => c.country);
+            sessionStorage.setItem('countries', JSON.stringify(res));
+            return res;
+          })
+        );
+    }
+  }
+
+  search(term: string) {
+    return this.getCountries().pipe(
+      switchMap((countries) => from(countries)),
+      filter(filterByFuzzyTextMatch(term)),
+      take(this.maximumReturnedItems),
+      reduce((acc, country) => acc.concat(country), [] as string[])
+    );
   }
 }
