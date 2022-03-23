@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { finalize } from 'rxjs/operators';
 import { CovidInfo } from './country-info';
 import { CovidInfoService } from './covid-info.service';
 import { HttpRequestState } from './http-request-state';
