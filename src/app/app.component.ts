@@ -26,18 +26,18 @@ export class AppComponent {
     this.store.select('country').subscribe((country: string) => {
       this.country = country;
       if (country) {
-        this.getCountryInfo(country);
+        this.getCovidInfo(country);
       }
     });
   }
 
-  getCountryInfo(country: string) {
+  getCovidInfo(country: string) {
     this.error = false;
     this.covidInfo = null;
     this.covidInfoLoading = true;
 
     this.covidInfoService
-      .getCovidInfo(country)
+      .getByCountry(country)
       .pipe(finalize(() => (this.covidInfoLoading = false)))
       .subscribe(
         (countryInfo: CovidInfo) => {

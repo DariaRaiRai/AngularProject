@@ -9,7 +9,7 @@ import { CovidInfo } from './country-info';
 export class CovidInfoService {
   constructor(private http: HttpClient) {}
 
-  getCovidInfo(country: string): Observable<CovidInfo> {
+  getByCountry(country: string): Observable<CovidInfo> {
     return this.http.get<CovidInfo>(
       `https://disease.sh/v3/covid-19/countries/${country}`
     );
