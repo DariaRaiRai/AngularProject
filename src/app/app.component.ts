@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs/operators';
-import { CountryInfo } from './country-info';
+import { CovidInfo } from './country-info';
 import { CovidInfoService } from './covid-info.service';
 
 interface AppState {
@@ -15,8 +15,8 @@ interface AppState {
 })
 export class AppComponent {
   country: string;
-  countryInfo: CountryInfo | null;
-  countryInfoLoading: boolean;
+  covidInfo: CovidInfo | null;
+  covidInfoLoading: boolean;
   error: boolean;
 
   constructor(
@@ -33,15 +33,15 @@ export class AppComponent {
 
   getCountryInfo(country: string) {
     this.error = false;
-    this.countryInfo = null;
-    this.countryInfoLoading = true;
+    this.covidInfo = null;
+    this.covidInfoLoading = true;
 
     this.covidInfoService
       .getCovidInfo(country)
-      .pipe(finalize(() => (this.countryInfoLoading = false)))
+      .pipe(finalize(() => (this.covidInfoLoading = false)))
       .subscribe(
-        (countryInfo: CountryInfo) => {
-          this.countryInfo = countryInfo;
+        (countryInfo: CovidInfo) => {
+          this.covidInfo = countryInfo;
         },
         () => {
           this.error = true;

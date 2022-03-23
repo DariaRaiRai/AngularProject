@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CountryInfo } from './country-info';
+import { CovidInfo } from './country-info';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +9,9 @@ import { CountryInfo } from './country-info';
 export class CovidInfoService {
   constructor(private http: HttpClient) {}
 
-  getCovidInfo(country: string): Observable<CountryInfo> {
-    return this.http.get<CountryInfo>(
-      `https://diseas3e.sh/v3/covid-19/countries/${country}`
+  getCovidInfo(country: string): Observable<CovidInfo> {
+    return this.http.get<CovidInfo>(
+      `https://disease.sh/v3/covid-19/countries/${country}`
     );
   }
 }

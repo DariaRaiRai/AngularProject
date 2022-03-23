@@ -1,4 +1,4 @@
-export interface CountryInfo {
+export interface CovidInfo {
   country: string;
   cases: number;
   todayCases: number;
