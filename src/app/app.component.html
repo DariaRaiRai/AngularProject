@@ -1,4 +1,14 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
 <br />
-<h1>{{ country | async }}</h1>
+<div class="country-info">
+  <h1>{{ country }}</h1>
+  <h3>[WIP]</h3>
+  <div *ngIf="error">Something went wrong.</div>
+  <div *ngIf="countryInfoLoading">Loading ...</div>
+  <div *ngIf="countryInfo && !countryInfoLoading">
+    <p><b>Cases: </b>{{ countryInfo.cases }}</p>
+    <p><b>Deaths: </b>{{ countryInfo.deaths }}</p>
+    <p><b>Population: </b>{{ countryInfo.population }}</p>
+  </div>
+</div>
