@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CovidInfo } from './country-info';
 import { CovidInfoService } from './covid-info.service';
@@ -13,7 +13,7 @@ interface AppState {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   country: string;
   covidInfo: HttpRequestState<CovidInfo> | null;
   covidInfoLoading: boolean;
@@ -22,7 +22,9 @@ export class AppComponent {
   constructor(
     private store: Store<AppState>,
     private covidInfoService: CovidInfoService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.store.select('country').subscribe((country: string) => {
       this.country = country;
       if (country) {
