@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs/operators';
 import { CovidInfo } from './country-info';
 import { CovidInfoService } from './covid-info.service';
+import { HttpRequestState } from './http-request-state';
 
 interface AppState {
   country: string;
@@ -15,7 +16,7 @@ interface AppState {
 })
 export class AppComponent {
   country: string;
-  covidInfo: CovidInfo | null;
+  covidInfo: HttpRequestState<CovidInfo> | null;
   covidInfoLoading: boolean;
   error: boolean;
 
@@ -32,20 +33,11 @@ export class AppComponent {
   }
 
   getCovidInfo(country: string) {
-    this.error = false;
-    this.covidInfo = null;
-    this.covidInfoLoading = true;
-
     this.covidInfoService
       .getByCountry(country)
-      .pipe(finalize(() => (this.covidInfoLoading = false)))
       .subscribe(
-        (countryInfo: CovidInfo) => {
-          this.covidInfo = countryInfo;
-        },
-        () => {
-          this.error = true;
-        }
+        (countryInfo: HttpRequestState<CovidInfo>) =>
+          (this.covidInfo = countryInfo)
       );
   }
 }
