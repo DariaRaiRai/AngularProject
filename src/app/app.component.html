@@ -1,4 +1,15 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
 <br />
-<h1>{{ country | async }}</h1>
+<div class="country-info">
+  <h1>{{ country }}</h1>
+  <div *ngIf="covidInfo">
+    <div *ngIf="covidInfo.error">Something went wrong.</div>
+    <div *ngIf="covidInfo.loading">Loading ...</div>
+    <div *ngIf="covidInfo.data">
+      <p><b>Cases: </b>{{ covidInfo.data.cases.toLocaleString() }}</p>
+      <p><b>Deaths: </b>{{ covidInfo.data.deaths.toLocaleString() }}</p>
+      <p><b>Population: </b>{{ covidInfo.data.population.toLocaleString() }}</p>
+    </div>
+  </div>
+</div>
